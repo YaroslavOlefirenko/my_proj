@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Card, Spin, Alert } from 'antd';
 
 const { Search } = Input;
@@ -14,8 +14,7 @@ const CarInfo = () => {
     setLoading(true);
     setError(null);
     try {
-const url = `https://cors-anywhere.herokuapp.com/https://baza-gai.com.ua/api/v1/check/auto/${plateNumber}`;
-
+      const url = `https://baza-gai.com.ua/nomer/${plateNumber}`;
       const request = await fetch(url, { 
         headers: { 
           "Accept": "application/json", 
@@ -26,13 +25,18 @@ const url = `https://cors-anywhere.herokuapp.com/https://baza-gai.com.ua/api/v1/
         throw new Error('Network response was not ok');
       }
       const data = await request.json();
-      setCarData(data.result);
+      setCarData(data);
     } catch (err) {
       console.error("Error fetching car data:", err);
       setError(`Failed to fetch car data. ${err.message || 'Please try again.'}`);
     }
     setLoading(false);
   };
+
+  // Викликаємо fetchCarData при завантаженні компонента
+  useEffect(() => {
+    fetchCarData('KA0007XB');
+  }, []);
 
   return (
     <div style={{ padding: '30px' }}>
@@ -46,21 +50,24 @@ const url = `https://cors-anywhere.herokuapp.com/https://baza-gai.com.ua/api/v1/
       {loading && <Spin size="large" />}
       {error && <Alert message={error} type="error" />}
       {carData && (
-        <Card title="Car Information" style={{ width: 400, margin: '0 auto' }}>
-          <p><strong>Plate Number:</strong> {carData.plate}</p>
-          <p><strong>VIN:</strong> {carData.vin}</p>
-          <p><strong>Region:</strong> {carData.region.name_ua}</p>
-          <p><strong>Vendor:</strong> {carData.vendor}</p>
-          <p><strong>Model:</strong> {carData.model}</p>
-          <p><strong>Year:</strong> {carData.year}</p>
-          <p><strong>Status:</strong> {carData.is_stolen ? 'Stolen' : 'Not Stolen'}</p>
-          {carData.photo ? (
-            <div>
-              <img src={carData.photo_url} alt="Car" style={{ width: '100%', marginTop: '20px' }} />
+        <Card title="Car Info" style={{ width: '70%', margin: '0 auto' }}>
+          <div style={{ display: 'flex'}}>
+          <div style={{ marginBottom: '20px' }}>
+            <p><strong>Plate Number:</strong> {carData.digits}</p>
+            <p><strong>VIN:</strong> {carData.vin}</p>
+            <p><strong>Region:</strong> {carData.region.name_ua}</p>
+            <p><strong>Vendor:</strong> {carData.vendor}</p>
+            <p><strong>Model:</strong> {carData.model}</p>
+            <p><strong>Year:</strong> {carData.model_year}</p>
+            <p><strong>Status:</strong> {carData.is_stolen ? 'Stolen' : 'Not Stolen'}</p>
             </div>
-          ) : (
-            <p>No photo available</p>
-          )}
+            
+          {carData.photo_url && (
+            <div style={{ textAlign: 'center' }}>
+              <img src={carData.photo_url} alt="Car" style={{ width: '80%', margin: '20px' }} />
+            </div>
+            )}
+            </div>
         </Card>
       )}
     </div>
