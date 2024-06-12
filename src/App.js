@@ -2,10 +2,11 @@ import React from 'react';
 import { useRoutes } from "react-router-dom";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register"; 
-import CarsList from "./components/cars/CarsList";
+import CarsList from "./components/cars/CarListPage";
 import AddCar from "./components/cars/AddCar";
 import CarInfo from './components/check/CarInfo'; // Імпортуйте новий компонент
 import Header from "./components/header";
+import CarDetails from './components/cars/CarDetails';
 import Home from "./components/home";
 import { AuthProvider } from "./contexts/authContext";
 
@@ -14,6 +15,10 @@ function App() {
     {
       path: "*",
       element: <Login />,
+    },
+    {
+      path: "/car/:id",
+      element: <CarDetails />,
     },
     {
       path: "/login",
