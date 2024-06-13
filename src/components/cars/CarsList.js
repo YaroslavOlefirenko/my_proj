@@ -35,25 +35,38 @@ const CarList = () => {
     fetchBrandsAndModels();
   }, []);
 
-  const handleSearch = (value) => {
-    const filtered = cars.filter(car => 
-      car.vendor.toLowerCase().includes(value.toLowerCase()) || 
-      car.model.toLowerCase().includes(value.toLowerCase()) ||
-      car.year.toString().includes(value) ||
-      car.price.toString().includes(value)
-    );
-    setFilteredCars(filtered);
-  };
-
-  const handleFilterChange = (key, value) => {
-    const filtered = cars.filter(car => car[key].toLowerCase() === value.toLowerCase());
+  const handleFilterChange = (filters) => {
+    let filtered = cars;
+    if (filters.brand) {
+      filtered = filtered.filter(car => car.vendor.toLowerCase() === filters.brand.toLowerCase());
+    }
+    if (filters.model) {
+      filtered = filtered.filter(car => car.model.toLowerCase() === filters.model.toLowerCase());
+    }
+    if (filters.year) {
+      filtered = filtered.filter(car => car.year.toString() === filters.year);
+    }
+    if (filters.priceFrom) {
+      filtered = filtered.filter(car => car.price >= parseFloat(filters.priceFrom));
+    }
+    if (filters.priceTo) {
+      filtered = filtered.filter(car => car.price <= parseFloat(filters.priceTo));
+    }
+    if (filters.mileage) {
+      filtered = filtered.filter(car => car.mileage <= parseFloat(filters.mileage));
+    }
+    if (filters.region) {
+      filtered = filtered.filter(car => car.region.toLowerCase() === filters.region.toLowerCase());
+    }
+    if (filters.transmission) {
+      filtered = filtered.filter(car => car.transmission.toLowerCase() === filters.transmission.toLowerCase());
+    }
     setFilteredCars(filtered);
   };
 
   return (
     <div style={{ padding: '30px' }}>
       <FilterBar 
-        onSearch={handleSearch} 
         onFilterChange={handleFilterChange} 
         brands={brands} 
         models={models} 

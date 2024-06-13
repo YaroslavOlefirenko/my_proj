@@ -28,12 +28,11 @@ const CarInfo = () => {
       setCarData(data);
     } catch (err) {
       console.error("Error fetching car data:", err);
-      setError(`Failed to fetch car data. ${err.message || 'Please try again.'}`);
+      setError(`Не вдалося отримати дані про автомобіль. ${err.message || 'Будь ласка, спробуйте ще раз.'}`);
     }
     setLoading(false);
   };
 
-  // Викликаємо fetchCarData при завантаженні компонента
   useEffect(() => {
     fetchCarData('KA0007XB');
   }, []);
@@ -41,8 +40,8 @@ const CarInfo = () => {
   return (
     <div style={{ padding: '30px' }}>
       <Search
-        placeholder="Enter car plate number"
-        enterButton="Check"
+        placeholder="Введіть державний номер автомобіля"
+        enterButton="Перевірити"
         size="large"
         onSearch={fetchCarData}
         style={{ marginBottom: '20px' }}
@@ -50,24 +49,36 @@ const CarInfo = () => {
       {loading && <Spin size="large" />}
       {error && <Alert message={error} type="error" />}
       {carData && (
-        <Card title="Car Info" style={{ width: '70%', margin: '0 auto' }}>
-          <div style={{ display: 'flex'}}>
-          <div style={{ marginBottom: '20px' }}>
-            <p><strong>Plate Number:</strong> {carData.digits}</p>
-            <p><strong>VIN:</strong> {carData.vin}</p>
-            <p><strong>Region:</strong> {carData.region.name_ua}</p>
-            <p><strong>Vendor:</strong> {carData.vendor}</p>
-            <p><strong>Model:</strong> {carData.model}</p>
-            <p><strong>Year:</strong> {carData.model_year}</p>
-            <p><strong>Status:</strong> {carData.is_stolen ? 'Stolen' : 'Not Stolen'}</p>
+        <Card title="Інформація про автомобіль" style={{ width: '70%', margin: '0 auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+            <div style={{ marginBottom: '20px' }}>
+              <p><strong>Державний номер:</strong> {carData.digits}</p>
+              <p><strong>VIN:</strong> {carData.vin}</p>
+              <p><strong>Регіон:</strong> {carData.region.name_ua}</p>
+              <p><strong>Виробник:</strong> {carData.vendor}</p>
+              <p><strong>Модель:</strong> {carData.model}</p>
+              <p><strong>Рік:</strong> {carData.model_year}</p>
+              <p><strong>Статус:</strong> {carData.is_stolen ? 'Викрадено' : 'Не викрадено'}</p>
+              {carData.operations && carData.operations.length > 0 && (
+                <div>
+                  <p><strong>Остання реєстрація:</strong></p>
+                  <p><strong>Дата реєстрації:</strong> {carData.operations[0].registered_at}</p>
+                  <p><strong>Виробник:</strong> {carData.operations[0].vendor}</p>
+                  <p><strong>Модель:</strong> {carData.operations[0].model}</p>
+                  <p><strong>Рік випуску:</strong> {carData.operations[0].model_year}</p>
+                  <p><strong>Колір:</strong> {carData.operations[0].color.ua}</p>
+                  <p><strong>Тип:</strong> {carData.operations[0].kind.ua}</p>
+                  <p><strong>Адреса:</strong> {carData.operations[0].address}</p>
+                  <p><strong>Об'єм двигуна:</strong> {carData.operations[0].displacement}</p>
+                </div>
+              )}
             </div>
-            
-          {carData.photo_url && (
-            <div style={{ textAlign: 'center' }}>
-              <img src={carData.photo_url} alt="Car" style={{ width: '80%', margin: '20px' }} />
-            </div>
+            {carData.photo_url && (
+              <div style={{ textAlign: 'center', alignSelf: 'center' }}>
+                <img src={carData.photo_url} alt="Автомобіль" style={{ width: '70%', marginLeft: '150px', marginTop :'10px' }} />
+              </div>
             )}
-            </div>
+          </div>
         </Card>
       )}
     </div>

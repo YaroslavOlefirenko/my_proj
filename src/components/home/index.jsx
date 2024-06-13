@@ -1,17 +1,31 @@
-import React from 'react'
-import { useAuth } from '../../contexts/authContext'
-import CarInfo from '../check/CarInfo'
+import React, { useEffect } from 'react';
+import { useAuth } from '../../contexts/authContext';
+import CarInfo from '../check/CarInfo';
+import { notification } from 'antd';
 
 const Home = () => {
-    const { currentUser } = useAuth()
+    const { currentUser } = useAuth();
+  
+    useEffect(() => {
+      const firstLogin = localStorage.getItem('firstLogin');
+  
+      if (currentUser && !firstLogin) {
+        notification.success({
+          message: 'Авторизовано',
+          description: `Hello ${currentUser.displayName || currentUser.email}, you are now logged in.`,
+          duration: 2,
+        });
+        localStorage.setItem('firstLogin', 'true');
+      }
+    }, [currentUser]);
+  
     return (
-        <div>
-            <div className='text-2xl font-bold pt-14'>Hello {currentUser.displayName ? currentUser.displayName : currentUser.email}, you are now logged in.</div>
+      <div>
+        
         <CarInfo />
-        
-        
-        </div>
-    )
-}
-
-export default Home
+      </div>
+    );
+  };
+  
+  export default Home;
+  

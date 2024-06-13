@@ -38,7 +38,7 @@ const Login = () => {
                 <div className="w-96 text-gray-600 space-y-5 p-4 shadow-xl border rounded-xl">
                     <div className="text-center">
                         <div className="mt-2">
-                            <h3 className="text-gray-800 text-xl font-semibold sm:text-2xl">Welcome Back</h3>
+                            <h3 className="text-gray-800 text-xl font-semibold sm:text-2xl">Раді бачити вас знову</h3>
                         </div>
                     </div>
                     <form
@@ -61,7 +61,7 @@ const Login = () => {
 
                         <div>
                             <label className="text-sm text-gray-600 font-bold">
-                                Password
+                                Пароль
                             </label>
                             <input
                                 type="password"
@@ -81,12 +81,12 @@ const Login = () => {
                             disabled={isSigningIn}
                             className={`w-full px-4 py-2 text-white font-medium rounded-lg ${isSigningIn ? 'bg-gray-300 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-xl transition duration-300'}`}
                         >
-                            {isSigningIn ? 'Signing In...' : 'Sign In'}
+                            {isSigningIn ? 'Вхід...' : 'Увійти'}
                         </button>
                     </form>
-                    <p className="text-center text-sm">Don't have an account? <Link to={'/register'} className="hover:underline font-bold">Sign up</Link></p>
+                    <p className="text-center text-sm">Не маєте облікового запису? <Link to={'/register'} className="hover:underline font-bold">Зареєструйтесь</Link></p>
                     <div className='flex flex-row text-center w-full'>
-                        <div className='border-b-2 mb-2.5 mr-2 w-full'></div><div className='text-sm font-bold w-fit'>OR</div><div className='border-b-2 mb-2.5 ml-2 w-full'></div>
+                        <div className='border-b-2 mb-2.5 mr-2 w-full'></div><div className='text-sm font-bold w-fit'>АБО</div><div className='border-b-2 mb-2.5 ml-2 w-full'></div>
                     </div>
                     <button
                         disabled={isSigningIn}
@@ -105,7 +105,7 @@ const Login = () => {
                                 </clipPath>
                             </defs>
                         </svg>
-                        {isSigningIn ? 'Signing In...' : 'Continue with Google'}
+                        {isSigningIn ? 'Вхід...' : 'Продовжити з Google'}
                     </button>
                 </div>
             </main>

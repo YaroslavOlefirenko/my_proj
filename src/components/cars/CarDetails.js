@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
-import { Spin, Descriptions, Carousel, Button } from 'antd';
+import { Spin, Descriptions, Carousel, Button, Flex } from 'antd';
 
 const CarDetails = () => {
   const { id } = useParams();
@@ -31,6 +31,18 @@ const CarDetails = () => {
 
   return (
     <div style={{ padding: '30px' }}>
+    {car.photos && (
+      <div style={{ marginBottom: '20px', width: '60%', margin: '0 auto' }}>
+        <Carousel autoplay style={{ width: '100%' }}>
+          {car.photos.map((photo, index) => (
+            <div key={index}>
+              <img src={photo} alt={`car-${index}`} style={{ width: '100%', maxHeight: '400px', objectFit: 'cover' }} />
+            </div>
+          ))}
+        </Carousel>
+      </div>
+    )}
+
       <Descriptions title="Інформація про автомобіль" bordered>
         <Descriptions.Item label="Марка">{car.vendor}</Descriptions.Item>
         <Descriptions.Item label="Модель">{car.model}</Descriptions.Item>
@@ -40,21 +52,16 @@ const CarDetails = () => {
         <Descriptions.Item label="Об'єм двигуна">{car.engineCapacity}</Descriptions.Item>
         <Descriptions.Item label="Пробіг">{car.mileage} км</Descriptions.Item>
         <Descriptions.Item label="Регіон">{car.region}</Descriptions.Item>
-        <Descriptions.Item label="Опис" span={3}>{car.description}</Descriptions.Item>
       </Descriptions>
 
-      {car.photos && (
-        <Carousel autoplay>
-          {car.photos.map((photo, index) => (
-            <div key={index}>
-              <img src={photo} alt={`car-${index}`} style={{ width: '100%', maxHeight: '400px', objectFit: 'cover' }} />
-            </div>
-          ))}
-        </Carousel>
-      )}
+      <div style={{ marginTop: '20px' }}>
+        <Descriptions title="Опис" bordered>
+          <Descriptions.Item>{car.description}</Descriptions.Item>
+        </Descriptions>
+      </div>
 
       <div style={{ marginTop: '20px' }}>
-        <h3>Ім'я власника: {car.ownerName}</h3>
+        <h3 style={{ marginBottom: '10px' }}>Ім'я власника: {car.ownerName}</h3>
         <Button type="primary" href={`tel:${car.phoneNumber}`}>
           Дзвінок {car.phoneNumber}
         </Button>
